@@ -38,10 +38,10 @@ fp32 wheel_speed[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   */
 static void chassis_vector_to_mecanum_wheel_speed(const fp32 vx_set, const fp32 vy_set, const float wz_set, fp32 wheel_speed[4]){
 	
-    wheel_speed[0] = 19*(vx_set - (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER *wz_set)/Wheel_Radius;
-    wheel_speed[1] = -19*(vy_set + (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER *wz_set)/Wheel_Radius;
-    wheel_speed[2] = -19*(vx_set + (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER *wz_set)/Wheel_Radius;
-    wheel_speed[3] = 19*(vy_set - (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER *wz_set)/Wheel_Radius;	
+    wheel_speed[0] = -19*(vx_set + vy_set + wz_set*(MOTOR_DISTANCE_TO_CENTER_X+MOTOR_DISTANCE_TO_CENTER_Y))/Wheel_Radius;
+    wheel_speed[1] = -19*(vx_set - vy_set + wz_set*(MOTOR_DISTANCE_TO_CENTER_X+MOTOR_DISTANCE_TO_CENTER_Y))/Wheel_Radius;
+    wheel_speed[2] =  19*(vx_set - vy_set - wz_set*(MOTOR_DISTANCE_TO_CENTER_X+MOTOR_DISTANCE_TO_CENTER_Y))/Wheel_Radius;
+    wheel_speed[3] =  19*(vx_set + vy_set - wz_set*(MOTOR_DISTANCE_TO_CENTER_X+MOTOR_DISTANCE_TO_CENTER_Y))/Wheel_Radius;		
 }
 
 /**
@@ -133,7 +133,7 @@ void chassis_changeSpeed(const uint16_t vx_set, const uint16_t vy_set, const uin
 		wz=-(32000-(float)wz_set)/32000.0f;						
 	else wz=0;
 					
-	vx=-(((float)vx_set)/65535.0f-0.5f);
+	vx=(((float)vx_set)/65535.0f-0.5f);
 	vy=((float)vy_set)/65535.0f-0.5f;
 	
 	chassis_vector_to_mecanum_wheel_speed(vx, vy, wz, wheel_speed);

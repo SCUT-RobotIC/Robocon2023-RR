@@ -153,11 +153,14 @@ void TaskAssignTask(void *argument)
   /* USER CODE BEGIN TaskAssignTask */
   /* Infinite loop */
 	int flag1=0;
+	int flag2=0;
+	int flag3=0;
+	int flag4=0;
   for(;;)
   {
 		if(!((lastRemote[2]==remotedata[2])&(lastRemote[3]==remotedata[3])&(lastRemote[6]==remotedata[6])))
 		{
-		chassis_changeSpeed(remotedata[2], remotedata[3], remotedata[6]);
+		chassis_changeSpeed(remotedata[3], remotedata[2], remotedata[6]);
 		lastRemote[2] = remotedata[2];
 		lastRemote[3] = remotedata[3];
 		lastRemote[6] = remotedata[6];
@@ -167,10 +170,10 @@ void TaskAssignTask(void *argument)
 		if(lastRemote[8]!=remotedata[8]){
 			if(remotedata[8]!=0)
 			{
-				if((remotedata[8]>>4)&1)//开启/关闭摩擦轮
+				if((remotedata[8]>>4)&1)//打开/关闭摩擦轮
 				{
 					if(flag1==0){
-					 Shot_Control(99);
+					 Shot_Control(50);
 					 flag1=1;
 					}
 				  else{
@@ -178,14 +181,44 @@ void TaskAssignTask(void *argument)
 					 flag1=0;
 				  }
 			  }
-			  else if((remotedata[8]>>4)&1)//弹仓上升
+			  else if((remotedata[8])&1)// 弹仓上升
 				{
-					/*功能函数*/
+					if(flag2==0){
+           Rise_Control_Left(0,1500);
+					 Rise_Control_Right(0,1500);
+					 flag2=1;
+					}
+				  else{
+					 Rise_Control_Left(0,0);
+					 Rise_Control_Right(0,0);
+					 flag2=0;
+				  }
 			  }
-        else if((remotedata[8]>>4)&1)//弹仓下降
+        else if((remotedata[8]>>1)&1)// 弹仓下降
 				{
-					/*功能函数*/
-			  }				
+					if(flag3==0){
+           Rise_Control_Left(1500,0);
+					 Rise_Control_Right(1500,0);
+					 flag3=1;
+					}
+				  else{
+					 Rise_Control_Left(0,0);
+					 Rise_Control_Right(0,0);
+					 flag3=0;
+				  }
+			  }
+				else if((remotedata[8]>>2)&1)//舵机 X
+				{
+					if(flag4==0){
+					 Servo_Control1(35);
+					 flag4=1; 
+					}
+				  else{
+					 Servo_Control1(155);
+					 flag4=0;
+				  }
+					
+				}
 		  }	
       lastRemote[8] = remotedata[8];			
 	}

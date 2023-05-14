@@ -116,23 +116,20 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_TIM1_Init();
-  MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM12_Init();
   MX_TIM4_Init();
-  MX_TIM5_Init();
-  MX_TIM6_Init();
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
 	
-  can_filter_init();       //配置CAN过滤器
-	HAL_CAN_Start(&hcan1);   //开启CAN总开关
+  can_filter_init();       //配置CAN过滤�?
+	HAL_CAN_Start(&hcan1);   //�?启CAN总开�?
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);//启动CAN接收中断	
 	
-	/// PID 初始化
+	/// PID 初始�?
 	chassis_init();
 	
-	///串口DMA初始化
+	///串口DMA初始�?
 	__HAL_UART_ENABLE_IT(&huart2,UART_IT_IDLE); //使能串口空闲中断                   
   HAL_UART_Receive_DMA(&huart2,buffer,255);
 	USER_TIM_PWM_Init();
