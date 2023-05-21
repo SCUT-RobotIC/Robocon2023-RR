@@ -64,24 +64,26 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+  /// 限位开关控制函数
   void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-	{
-		switch(GPIO_Pin)
-		{
-			case MOTOR_SWITCH_LEFT_UP_Pin:
-				__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, 0);
+  {
+    switch(GPIO_Pin)
+    {
+      case MOTOR_SWITCH_LEFT_UP_Pin:
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, 0);
         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, 0);
-			case MOTOR_SWITCH_RIGHT_UP_Pin:
-				__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3, 0);
+      case MOTOR_SWITCH_RIGHT_UP_Pin:
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3, 0);
         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_4, 0);
-			case MOTOR_SWITCH_LEFT_DOWN_Pin:
-				__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, 0);
+      case MOTOR_SWITCH_LEFT_DOWN_Pin:
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, 0);
         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, 0);
-			case MOTOR_SWITCH_RIGHT_DOWN_Pin:
-				__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3, 0);
+      case MOTOR_SWITCH_RIGHT_DOWN_Pin:
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3, 0);
         __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_4, 0);
-		}
-	}
+    }
+  }
+
 /* USER CODE END 0 */
 
 /**
@@ -121,19 +123,15 @@ int main(void)
   MX_TIM4_Init();
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
-	
-  can_filter_init();       //配置CAN过滤�?
-	HAL_CAN_Start(&hcan1);   //�?启CAN总开�?
-	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);//启动CAN接收中断	
-	
-	/// PID 初始�?
-	chassis_init();
-	
-	///串口DMA初始�?
-	__HAL_UART_ENABLE_IT(&huart2,UART_IT_IDLE); //使能串口空闲中断                   
-  HAL_UART_Receive_DMA(&huart2,buffer,255);
-	USER_TIM_PWM_Init();
-	
+  
+  can_filter_init();       //配置CAN过滤器
+  HAL_CAN_Start(&hcan1);   //开启CAN总开关
+  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);  // 启动CAN接收中断	
+  chassis_init();  // PID 初始化
+  __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);  // 使能串口空闲中断                   
+  HAL_UART_Receive_DMA(&huart2, buffer, 255);
+  USER_TIM_PWM_Init();
+  
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -150,11 +148,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	
-		
-		
-		
-			
+  
+    
+    
+    
+      
   }	
   /* USER CODE END 3 */
 }
